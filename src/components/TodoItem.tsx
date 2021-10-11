@@ -36,7 +36,7 @@ const TodoItem: React.FunctionComponent<TodoItemTSProps> = ({
     ? [styles.todoText, styles.todoTextCompleted]
     : styles.todoText;
   const circleStyle: StyleProp<ViewStyle> = [
-    styles.todoContainerRight,
+    styles.circle,
     { backgroundColor: category.color },
   ];
 
@@ -44,6 +44,8 @@ const TodoItem: React.FunctionComponent<TodoItemTSProps> = ({
     <TouchableOpacity style={styles.todoContainer}>
       <View style={styles.todoContainerLeft}>
         <Checkbox />
+      </View>
+      <View style={styles.todoContainerRight}>
         <View style={styles.todoTextContainer}>
           <Text style={todoTextStyle}>{todoText}</Text>
           {timeStamp ? (
@@ -53,8 +55,8 @@ const TodoItem: React.FunctionComponent<TodoItemTSProps> = ({
             </View>
           ) : undefined}
         </View>
+        {category.name !== "Inbox" ? <View style={circleStyle} /> : undefined}
       </View>
-      {category.name !== "Inbox" ? <View style={circleStyle} /> : undefined}
     </TouchableOpacity>
   );
 };
@@ -65,20 +67,23 @@ const styles = StyleSheet.create({
   todoContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
   },
   todoContainerLeft: {
+    width: "8%",
     flexDirection: "row",
     alignItems: "center",
   },
   todoContainerRight: {
-    height: 10,
-    width: 10,
-    borderRadius: 10,
+    marginLeft: "2%",
+    width: "90%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottomColor: colors.bottomLineColor,
+    borderBottomWidth: 1,
   },
   todoTextContainer: {
-    width: "85%",
-    padding: 10,
+    paddingVertical: 10,
   },
   todoText: {
     textAlign: "left",
@@ -97,5 +102,11 @@ const styles = StyleSheet.create({
     color: colors.textColor,
     fontSize: 12,
     opacity: 0.15,
+  },
+  circle: {
+    height: 10,
+    width: 10,
+    borderRadius: 10,
+    marginRight: 16,
   },
 });

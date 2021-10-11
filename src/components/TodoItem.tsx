@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Marked from "../../assets/Marked.svg";
 import Unmarked from "../../assets/Unmarked.svg";
 import Alarm from "../../assets/Alarm.svg";
-import { List, ListName } from "../data/lists";
+import { lists, ListName } from "../data/lists";
 import colors from "../constants/colors";
 
 interface IProps {
@@ -11,15 +11,17 @@ interface IProps {
   todoText: string;
   isCompleted: boolean;
   timeStamp: string | null;
-  category: List;
+  categoryId: number;
 }
 
 const TodoItem: React.FC<IProps> = ({
   todoText,
   isCompleted,
   timeStamp,
-  category,
+  categoryId,
 }) => {
+  const [category] = lists.filter((list) => list.id === categoryId);
+
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.containerLeft}>

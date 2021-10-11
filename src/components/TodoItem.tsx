@@ -1,21 +1,12 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Marked from "../../assets/Marked.svg";
 import Unmarked from "../../assets/Unmarked.svg";
 import Alarm from "../../assets/Alarm.svg";
-import { List } from "../data/lists";
+import { List, ListName } from "../data/lists";
 import colors from "../constants/colors";
-import { SvgProps } from "react-native-svg";
 
-interface TodoItemTSProps {
+interface IProps {
   id: number;
   todoText: string;
   isCompleted: boolean;
@@ -23,39 +14,40 @@ interface TodoItemTSProps {
   category: List;
 }
 
-const TodoItem: React.FunctionComponent<TodoItemTSProps> = ({
+const TodoItem: React.FC<IProps> = ({
   todoText,
   isCompleted,
   timeStamp,
   category,
 }) => {
-  const Checkbox: React.FunctionComponent<SvgProps> = isCompleted
-    ? Marked
-    : Unmarked;
-  const todoTextStyle: StyleProp<TextStyle> = isCompleted
-    ? [styles.todoText, styles.todoTextCompleted]
-    : styles.todoText;
-  const circleStyle: StyleProp<ViewStyle> = [
-    styles.circle,
-    { backgroundColor: category.color },
-  ];
-
   return (
-    <TouchableOpacity style={styles.todoContainer}>
-      <View style={styles.todoContainerLeft}>
-        <Checkbox />
+    <TouchableOpacity style={styles.container}>
+      <View style={styles.containerLeft}>
+        {isCompleted ? (
+          <Marked color={colors.checkedboxBgColor} />
+        ) : (
+          <Unmarked color={colors.uncheckedboxBorderColor} />
+        )}
       </View>
-      <View style={styles.todoContainerRight}>
-        <View style={styles.todoTextContainer}>
-          <Text style={todoTextStyle}>{todoText}</Text>
-          {timeStamp ? (
+      <View style={styles.containerRight}>
+        <View style={styles.textContainer}>
+          <Text
+            style={
+              isCompleted ? [styles.text, styles.textCompleted] : styles.text
+            }
+          >
+            {todoText}
+          </Text>
+          {timeStamp && (
             <View style={styles.alarmContainer}>
               <Alarm />
-              <Text style={styles.todoTimeStamp}>{timeStamp}</Text>
+              <Text style={styles.timeStamp}>{timeStamp}</Text>
             </View>
-          ) : undefined}
+          )}
         </View>
-        {category.name !== "Inbox" ? <View style={circleStyle} /> : undefined}
+        {category.name !== ListName.Inbox && (
+          <View style={[styles.circle, { backgroundColor: category.color }]} />
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -64,16 +56,16 @@ const TodoItem: React.FunctionComponent<TodoItemTSProps> = ({
 export default TodoItem;
 
 const styles = StyleSheet.create({
-  todoContainer: {
+  container: {
     flexDirection: "row",
     alignItems: "center",
   },
-  todoContainerLeft: {
+  containerLeft: {
     width: "8%",
     flexDirection: "row",
     alignItems: "center",
   },
-  todoContainerRight: {
+  containerRight: {
     marginLeft: "2%",
     width: "90%",
     flexDirection: "row",
@@ -82,22 +74,22 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.bottomLineColor,
     borderBottomWidth: 1,
   },
-  todoTextContainer: {
+  textContainer: {
     paddingVertical: 10,
   },
-  todoText: {
+  text: {
     textAlign: "left",
     fontSize: 15,
     color: colors.textColor,
   },
-  todoTextCompleted: {
+  textCompleted: {
     opacity: 0.5,
   },
   alarmContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
-  todoTimeStamp: {
+  timeStamp: {
     marginLeft: 4,
     color: colors.textColor,
     fontSize: 12,

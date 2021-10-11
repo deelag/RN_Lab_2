@@ -1,12 +1,12 @@
 import { List, lists } from "./lists";
 
-export type Todo = Readonly<{
+export interface Todo {
   id: number;
   todoText: string;
   isCompleted: boolean;
   timeStamp: string | null;
   category: List;
-}>;
+}
 
 export const todos: Todo[] = [
   {

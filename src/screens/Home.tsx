@@ -13,7 +13,7 @@ import colors from "../constants/colors";
 import { lists } from "../data/lists";
 import { todos } from "../data/todos";
 
-const Home: React.FunctionComponent = () => {
+const Home: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>

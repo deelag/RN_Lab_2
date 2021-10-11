@@ -5,8 +5,10 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  TouchableHighlight,
 } from "react-native";
 import MoreIcon from "../../assets/More.svg";
+import Plus from "../../assets/Plus.svg";
 import List from "../components/List";
 import TodoItem from "../components/TodoItem";
 import colors from "../constants/colors";
@@ -35,6 +37,9 @@ const Home: React.FC = () => {
           ))}
         </View>
       </ScrollView>
+      <TouchableHighlight style={styles.addButton}>
+        <Plus />
+      </TouchableHighlight>
     </View>
   );
 };
@@ -74,5 +79,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     opacity: 0.3,
     marginBottom: 6,
+  },
+  addButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 20,
+    bottom: 20,
+    backgroundColor: colors.bgColor,
+    width: 60,
+    height: 60,
+    borderRadius: 60,
+    elevation: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
   },
 });

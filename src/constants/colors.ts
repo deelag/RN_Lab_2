@@ -8,6 +8,6 @@ export default {
   yellowColor: "#FFE761",
   purpleColor: "#B678FF",
   bottomLineColor: "rgba(0, 0, 0, 0.1)",
-  checkedboxBgColor: "#006CFF",
-  uncheckedboxBorderColor: "rgba(37, 42, 49, 0.2)",
+  iconsColor: "#006CFF",
+  iconsBorderColor: "rgba(37, 42, 49, 0.2)",
 };

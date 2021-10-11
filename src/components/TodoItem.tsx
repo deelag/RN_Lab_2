@@ -26,9 +26,9 @@ const TodoItem: React.FC<IProps> = ({
     <TouchableOpacity style={styles.container}>
       <View style={styles.containerLeft}>
         {isCompleted ? (
-          <Marked color={colors.checkedboxBgColor} />
+          <Marked color={colors.iconsColor} />
         ) : (
-          <Unmarked color={colors.uncheckedboxBorderColor} />
+          <Unmarked color={colors.iconsBorderColor} />
         )}
       </View>
       <View style={styles.containerRight}>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   textContainer: {
-    paddingVertical: 10,
+    paddingVertical: 16,
   },
   text: {
     textAlign: "left",

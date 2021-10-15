@@ -1,28 +1,27 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import colors from "../constants/colors";
+import { useNavigation } from "@react-navigation/core";
+import colors, { getColorByBgColor } from "../constants/colors";
+import { HomeScreenNavigationProp, IListProps } from "../types/types";
+import { renderTaskWord } from "../constants/renderTaskCount";
 
-interface IProps {
-  name: string;
-  taskCount: number;
-  color: string;
-}
-
-const List: React.FC<IProps> = ({ name, taskCount, color }) => {
-  const getColorByBgColor = (bgColor: string) => {
-    return parseInt(bgColor.replace("#", ""), 16) > 0xffffff / 2
-      ? "#000"
-      : "#fff";
-  };
-  const renderTaskWord = "task" + (taskCount === 1 ? "" : "s");
+const List = ({ id, name, taskCount, color }: IListProps) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: color }]}>
+    <TouchableOpacity
+      style={[styles.container, { backgroundColor: color }]}
+      onPress={() =>
+        navigation.navigate("Category", {
+          listId: id,
+        })
+      }
+    >
       <Text style={[styles.name, { color: getColorByBgColor(color) }]}>
         {name}
       </Text>
       <Text style={[styles.taskCount, { color: getColorByBgColor(color) }]}>
-        {taskCount + " " + renderTaskWord}
+        {taskCount + " " + renderTaskWord(taskCount)}
       </Text>
     </TouchableOpacity>
   );

@@ -1,33 +1,29 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  TouchableHighlight,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import MoreIcon from "../../assets/More.svg";
-import Plus from "../../assets/Plus.svg";
 import List from "../components/List";
 import TodoItem from "../components/TodoItem";
 import colors from "../constants/colors";
 import { lists } from "../data/lists";
 import { todos } from "../data/todos";
+import Header from "../components/Header";
+import AddButton from "../components/AddButton";
 
-const Home: React.FC = () => {
+const Home = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Today</Text>
-        <TouchableOpacity>
-          <MoreIcon height={30} width={30} style={styles.moreIcon} />
-        </TouchableOpacity>
-      </View>
+      <Header bgColor={colors.bgColor} text="Today">
+        <MoreIcon
+          color={colors.iconsColor}
+          height={30}
+          width={30}
+          style={styles.moreIcon}
+        />
+      </Header>
       <ScrollView>
         <View style={styles.todosContainer}>
           {todos.map((todo) => (
-            <TodoItem key={todo.id} {...todo} />
+            <TodoItem key={todo.id} {...todo} bgColor={colors.bgColor} />
           ))}
         </View>
         <View style={styles.listsContainer}>
@@ -37,9 +33,7 @@ const Home: React.FC = () => {
           ))}
         </View>
       </ScrollView>
-      <TouchableHighlight style={styles.addButton}>
-        <Plus />
-      </TouchableHighlight>
+      <AddButton />
     </View>
   );
 };
@@ -52,20 +46,8 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: colors.bgColor,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 40,
-    marginBottom: 20,
-  },
-  headerText: {
-    marginLeft: 50,
-    fontSize: 26,
-    fontWeight: "bold",
-  },
   moreIcon: {
-    marginRight: 10,
+    marginRight: 16,
     marginTop: 10,
   },
   todosContainer: { paddingLeft: 10, marginBottom: 20 },
@@ -79,24 +61,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     opacity: 0.3,
     marginBottom: 6,
-  },
-  addButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    right: 20,
-    bottom: 20,
-    backgroundColor: colors.bgColor,
-    width: 60,
-    height: 60,
-    borderRadius: 60,
-    elevation: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
   },
 });

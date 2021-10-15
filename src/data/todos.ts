@@ -1,5 +1,3 @@
-import { List, lists } from "./lists";
-
 export interface Todo {
   id: number;
   todoText: string;
@@ -35,7 +33,7 @@ export const todos: Todo[] = [
     todoText: "Don't forget to pick up Mickael from school",
     isCompleted: false,
     timeStamp: null,
-    categoryId: 1,
+    categoryId: 0,
   },
   {
     id: 4,

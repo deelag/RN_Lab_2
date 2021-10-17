@@ -1,4 +1,6 @@
-import colors from "../constants/colors";
+import { AnyAction } from "redux";
+
+import colors from "../../constants/colors";
 
 export interface List {
   id: number;
@@ -7,14 +9,14 @@ export interface List {
   color: string;
 }
 
-export enum ListName {
+export enum DefaultListName {
   Inbox = "Inbox",
 }
 
-export const lists: List[] = [
+const initialState: List[] = [
   {
     id: 0,
-    name: ListName.Inbox,
+    name: DefaultListName.Inbox,
     taskCount: 1,
     color: colors.greyColor,
   },
@@ -43,3 +45,10 @@ export const lists: List[] = [
     color: colors.purpleColor,
   },
 ];
+
+export default function listsReducer(state = initialState, action: AnyAction) {
+  switch (action.type) {
+    default:
+      return state;
+  }
+}

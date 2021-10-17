@@ -5,10 +5,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./src/screens/Home";
 import Category from "./src/screens/Category";
 import { RootStackParamList } from "./src/types/types";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
       <StatusBar style="auto" />
@@ -27,4 +29,14 @@ export default function App() {
       </RootStack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+const AppWrapper = () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+};
+
+export default AppWrapper;

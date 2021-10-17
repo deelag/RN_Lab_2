@@ -1,3 +1,5 @@
+import { ACTIONTYPE } from "../actions/todosActions";
+
 export interface Todo {
   id: number;
   todoText: string;
@@ -6,7 +8,7 @@ export interface Todo {
   categoryId: number;
 }
 
-export const todos: Todo[] = [
+const initialState: Todo[] = [
   {
     id: 0,
     todoText: "Start making a presentation",
@@ -43,3 +45,17 @@ export const todos: Todo[] = [
     categoryId: 2,
   },
 ];
+
+export default function todosReducer(state = initialState, action: ACTIONTYPE) {
+  switch (action.type) {
+    case "TOGGLE_TODO":
+      return state.map((todo) => {
+        if (todo.id === action.todoId) {
+          return { ...todo, isCompleted: !action.isCompleted };
+        }
+        return todo;
+      });
+    default:
+      return state;
+  }
+}

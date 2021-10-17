@@ -4,12 +4,14 @@ import MoreIcon from "../../assets/More.svg";
 import List from "../components/List";
 import TodoItem from "../components/TodoItem";
 import colors from "../constants/colors";
-import { lists } from "../data/lists";
-import { todos } from "../data/todos";
 import Header from "../components/Header";
 import AddButton from "../components/AddButton";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 const Home = () => {
+  const todos = useAppSelector((state) => state.todos);
+  const lists = useAppSelector((state) => state.lists);
+
   return (
     <View style={styles.container}>
       <Header bgColor={colors.bgColor} text="Today" RightIcon={MoreIcon} />
@@ -18,6 +20,7 @@ const Home = () => {
           {todos.map((todo) => (
             <TodoItem
               key={todo.id}
+              id={todo.id}
               todoText={todo.todoText}
               isCompleted={todo.isCompleted}
               timeStamp={todo.timeStamp}

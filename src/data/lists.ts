@@ -9,10 +9,6 @@ export interface List {
 
 export enum ListName {
   Inbox = "Inbox",
-  Work = "Work",
-  Shopping = "Shopping",
-  Family = "Family",
-  Personal = "Personal",
 }
 
 export const lists: List[] = [
@@ -24,25 +20,25 @@ export const lists: List[] = [
   },
   {
     id: 1,
-    name: ListName.Work,
+    name: "Work",
     taskCount: 2,
     color: colors.greenColor,
   },
   {
     id: 2,
-    name: ListName.Shopping,
+    name: "Shopping",
     taskCount: 3,
     color: colors.redColor,
   },
   {
     id: 3,
-    name: ListName.Family,
+    name: "Family",
     taskCount: 1,
     color: colors.yellowColor,
   },
   {
     id: 4,
-    name: ListName.Personal,
+    name: "Personal",
     taskCount: 4,
     color: colors.purpleColor,
   },

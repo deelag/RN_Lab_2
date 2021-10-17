@@ -37,7 +37,7 @@ export const todos: Todo[] = [
   },
   {
     id: 4,
-    todoText: "Pay for rent",
+    todoText: "Buy a chocolate for Charlotte",
     isCompleted: false,
     timeStamp: null,
     categoryId: 2,

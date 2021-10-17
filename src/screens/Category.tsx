@@ -13,7 +13,6 @@ const Category = ({ route }: CategoryScreenProps) => {
   const { listId } = route.params;
   const [chosenList] = lists.filter((list) => list.id === listId);
   const todosInList = todos.filter((todo) => todo.categoryId === listId);
-  console.log(todosInList);
 
   return (
     <View style={[styles.container, { backgroundColor: chosenList.color }]}>

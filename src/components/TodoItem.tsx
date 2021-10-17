@@ -4,50 +4,68 @@ import Marked from "../../assets/Marked.svg";
 import Unmarked from "../../assets/Unmarked.svg";
 import Alarm from "../../assets/Alarm.svg";
 import { lists, ListName } from "../data/lists";
-import colors from "../constants/colors";
+import colors, {
+  addOpacityToColor,
+  getColorByBgColor,
+} from "../constants/colors";
 
 interface IProps {
-  id: number;
   todoText: string;
   isCompleted: boolean;
   timeStamp: string | null;
   categoryId: number;
+  bgColor: string;
 }
 
-const TodoItem: React.FC<IProps> = ({
+const TodoItem = ({
   todoText,
   isCompleted,
   timeStamp,
   categoryId,
-}) => {
-  const [category] = lists.filter((list) => list.id === categoryId);
+  bgColor,
+}: IProps) => {
+  // TODO:
+  const category = lists.find((list) => list.id === categoryId);
+  const colorByBgColor = getColorByBgColor(bgColor);
+  const textColor = [styles.text, { color: colorByBgColor }];
 
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.containerLeft}>
         {isCompleted ? (
-          <Marked color={colors.checkedboxBgColor} />
+          <Marked color={getColorByBgColor(bgColor, colors.iconsColor)} />
         ) : (
-          <Unmarked color={colors.uncheckedboxBorderColor} />
+          <Unmarked
+            color={getColorByBgColor(
+              bgColor,
+              colors.iconsBorderColor,
+              colors.lightIconsBorderColor
+            )}
+          />
         )}
       </View>
-      <View style={styles.containerRight}>
+      <View
+        style={[
+          styles.containerRight,
+          { borderBottomColor: addOpacityToColor(colorByBgColor, 0.2) },
+        ]}
+      >
         <View style={styles.textContainer}>
           <Text
-            style={
-              isCompleted ? [styles.text, styles.textCompleted] : styles.text
-            }
+            style={isCompleted ? [textColor, styles.textCompleted] : textColor}
           >
             {todoText}
           </Text>
           {timeStamp && (
             <View style={styles.alarmContainer}>
-              <Alarm />
-              <Text style={styles.timeStamp}>{timeStamp}</Text>
+              <Alarm color={colorByBgColor} />
+              <Text style={[styles.timeStamp, { color: colorByBgColor }]}>
+                {timeStamp}
+              </Text>
             </View>
           )}
         </View>
-        {category.name !== ListName.Inbox && (
+        {category !== undefined && category.name !== ListName.Inbox && (
           <View style={[styles.circle, { backgroundColor: category.color }]} />
         )}
       </View>
@@ -73,16 +91,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderBottomColor: colors.bottomLineColor,
     borderBottomWidth: 1,
   },
   textContainer: {
-    paddingVertical: 10,
+    paddingVertical: 16,
   },
   text: {
     textAlign: "left",
     fontSize: 15,
-    color: colors.textColor,
   },
   textCompleted: {
     opacity: 0.5,
@@ -90,12 +106,12 @@ const styles = StyleSheet.create({
   alarmContainer: {
     flexDirection: "row",
     alignItems: "center",
+    opacity: 0.3,
   },
   timeStamp: {
     marginLeft: 4,
     color: colors.textColor,
     fontSize: 12,
-    opacity: 0.15,
   },
   circle: {
     height: 10,

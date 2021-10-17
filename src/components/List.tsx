@@ -1,28 +1,42 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import colors from "../constants/colors";
+import { useNavigation } from "@react-navigation/core";
+import colors, { getColorByBgColor } from "../constants/colors";
+import { RootStackParamList } from "../types/types";
+import { renderTaskWord } from "../constants/renderTaskCount";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-interface IProps {
+export type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Home"
+>;
+
+export interface IProps {
+  id: number;
   name: string;
   taskCount: number;
   color: string;
 }
 
-const List: React.FC<IProps> = ({ name, taskCount, color }) => {
-  const getColorByBgColor = (bgColor: string) => {
-    return parseInt(bgColor.replace("#", ""), 16) > 0xffffff / 2
-      ? "#000"
-      : "#fff";
+const List = ({ id, name, taskCount, color }: IProps) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const navigateOnPress = () => {
+    navigation.navigate("Category", {
+      listId: id,
+    });
   };
-  const renderTaskWord = "task" + (taskCount === 1 ? "" : "s");
 
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: color }]}>
+    <TouchableOpacity
+      style={[styles.container, { backgroundColor: color }]}
+      onPress={navigateOnPress}
+    >
       <Text style={[styles.name, { color: getColorByBgColor(color) }]}>
         {name}
       </Text>
       <Text style={[styles.taskCount, { color: getColorByBgColor(color) }]}>
-        {taskCount + " " + renderTaskWord}
+        {taskCount + " " + renderTaskWord(taskCount)}
       </Text>
     </TouchableOpacity>
   );

@@ -12,24 +12,30 @@ import AddButton from "../components/AddButton";
 const Home = () => {
   return (
     <View style={styles.container}>
-      <Header bgColor={colors.bgColor} text="Today">
-        <MoreIcon
-          color={colors.iconsColor}
-          height={30}
-          width={30}
-          style={styles.moreIcon}
-        />
-      </Header>
+      <Header bgColor={colors.bgColor} text="Today" RightIcon={MoreIcon} />
       <ScrollView>
         <View style={styles.todosContainer}>
           {todos.map((todo) => (
-            <TodoItem key={todo.id} {...todo} bgColor={colors.bgColor} />
+            <TodoItem
+              key={todo.id}
+              todoText={todo.todoText}
+              isCompleted={todo.isCompleted}
+              timeStamp={todo.timeStamp}
+              categoryId={todo.categoryId}
+              bgColor={colors.bgColor}
+            />
           ))}
         </View>
         <View style={styles.listsContainer}>
           <Text style={styles.listsHeader}>Lists</Text>
           {lists.map((list) => (
-            <List key={list.id} {...list} />
+            <List
+              key={list.id}
+              id={list.id}
+              name={list.name}
+              taskCount={list.taskCount}
+              color={list.color}
+            />
           ))}
         </View>
       </ScrollView>
@@ -45,10 +51,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     backgroundColor: colors.bgColor,
-  },
-  moreIcon: {
-    marginRight: 16,
-    marginTop: 10,
   },
   todosContainer: { paddingLeft: 10, marginBottom: 20 },
   listsContainer: {

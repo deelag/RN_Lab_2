@@ -2,16 +2,20 @@ import React from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
 import Header from "../components/Header";
 import { lists } from "../data/lists";
-import { CategoryScreenProps } from "../types/types";
+import { RootStackParamList } from "../types/types";
 import EditIcon from "../../assets/Edit.svg";
-import { getColorByBgColor } from "../constants/colors";
 import { todos } from "../data/todos";
 import AddButton from "../components/AddButton";
 import TodoItem from "../components/TodoItem";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const Category = ({ route }: CategoryScreenProps) => {
+type Props = NativeStackScreenProps<RootStackParamList, "Category">;
+
+const Category = ({ route }: Props) => {
   const { listId } = route.params;
-  const [chosenList] = lists.filter((list) => list.id === listId);
+  // TODO: check if this is the right way to do it
+  const chosenList = lists.find((list) => list.id === listId);
+  if (chosenList === undefined) return <View />;
   const todosInList = todos.filter((todo) => todo.categoryId === listId);
 
   return (
@@ -20,17 +24,18 @@ const Category = ({ route }: CategoryScreenProps) => {
         bgColor={chosenList.color}
         text={chosenList.name}
         taskCount={chosenList.taskCount}
-      >
-        <EditIcon
-          color={getColorByBgColor(chosenList.color)}
-          height={20}
-          width={20}
-          style={styles.editIcon}
-        />
-      </Header>
+        RightIcon={EditIcon}
+      />
       <ScrollView style={styles.todosContainer}>
         {todosInList.map((todo) => (
-          <TodoItem key={todo.id} {...todo} bgColor={chosenList.color} />
+          <TodoItem
+            key={todo.id}
+            todoText={todo.todoText}
+            isCompleted={todo.isCompleted}
+            timeStamp={todo.timeStamp}
+            categoryId={todo.categoryId}
+            bgColor={chosenList.color}
+          />
         ))}
       </ScrollView>
       <AddButton />
@@ -46,7 +51,4 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   todosContainer: { paddingLeft: 10, marginBottom: 20 },
-  editIcon: {
-    marginRight: 16,
-  },
 });

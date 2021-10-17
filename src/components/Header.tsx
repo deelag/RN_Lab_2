@@ -1,17 +1,31 @@
 import React from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { SvgProps } from "react-native-svg";
 import { getColorByBgColor } from "../constants/colors";
 import { renderTaskWord } from "../constants/renderTaskCount";
-import { IHeaderProps } from "../types/types";
 
-const Header = ({ taskCount, bgColor, text, children }: IHeaderProps) => {
+export interface IProps {
+  text: string;
+  taskCount?: number;
+  bgColor: string;
+  RightIcon: React.FC<SvgProps>;
+}
+
+const Header = ({ taskCount, bgColor, text, RightIcon }: IProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.topPart}>
         <Text style={[styles.text, { color: getColorByBgColor(bgColor) }]}>
           {text}
         </Text>
-        <TouchableOpacity>{children}</TouchableOpacity>
+        <TouchableOpacity>
+          <RightIcon
+            color={getColorByBgColor(bgColor)}
+            height={20}
+            width={20}
+            style={styles.rightIcon}
+          />
+        </TouchableOpacity>
       </View>
       {taskCount && (
         <Text style={[styles.countText, { color: getColorByBgColor(bgColor) }]}>
@@ -42,5 +56,8 @@ const styles = StyleSheet.create({
   countText: {
     fontSize: 14,
     opacity: 0.5,
+  },
+  rightIcon: {
+    marginRight: 16,
   },
 });

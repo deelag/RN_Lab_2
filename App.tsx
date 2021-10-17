@@ -19,7 +19,11 @@ export default function App() {
         }}
       >
         <RootStack.Screen name="Home" component={Home} />
-        <RootStack.Screen name="Category" component={Category} />
+        <RootStack.Screen
+          name="Category"
+          component={Category}
+          options={{ presentation: "modal" }}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );

@@ -8,7 +8,14 @@ import colors, {
   addOpacityToColor,
   getColorByBgColor,
 } from "../constants/colors";
-import { ITodoItemProps } from "../types/types";
+
+interface IProps {
+  todoText: string;
+  isCompleted: boolean;
+  timeStamp: string | null;
+  categoryId: number;
+  bgColor: string;
+}
 
 const TodoItem = ({
   todoText,
@@ -16,8 +23,9 @@ const TodoItem = ({
   timeStamp,
   categoryId,
   bgColor,
-}: ITodoItemProps) => {
-  const [category] = lists.filter((list) => list.id === categoryId);
+}: IProps) => {
+  // TODO:
+  const category = lists.find((list) => list.id === categoryId);
   const colorByBgColor = getColorByBgColor(bgColor);
   const textColor = [styles.text, { color: colorByBgColor }];
 
@@ -57,7 +65,7 @@ const TodoItem = ({
             </View>
           )}
         </View>
-        {category.name !== ListName.Inbox && (
+        {category !== undefined && category.name !== ListName.Inbox && (
           <View style={[styles.circle, { backgroundColor: category.color }]} />
         )}
       </View>

@@ -1,32 +1,31 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { DefaultListName } from "../redux/reducers/listsReducer";
+import { completeTodo } from "../redux/actions/todosActions";
+import { Todo } from "../redux/reducers/todosReducer";
 import Marked from "../../assets/Marked.svg";
 import Unmarked from "../../assets/Unmarked.svg";
-import Alarm from "../../assets/Alarm.svg";
 import colors, {
   addOpacityToColor,
   getColorByBgColor,
 } from "../constants/colors";
-import { DefaultListName } from "../redux/reducers/listsReducer";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { completeTodo } from "../redux/actions/todosActions";
+import AlarmContainer from "./AlarmContainer";
 
-interface IProps {
-  id: number;
-  todoText: string;
-  isCompleted: boolean;
-  timeStamp: string | null;
-  categoryId: number;
+interface IProps extends Todo {
   bgColor: string;
+  isHomePage?: true;
 }
 
 const TodoItem = ({
   id,
   todoText,
   isCompleted,
-  timeStamp,
+  dayTimeStamp,
+  hourTimeStamp,
   categoryId,
   bgColor,
+  isHomePage,
 }: IProps) => {
   const lists = useAppSelector((state) => state.lists);
 
@@ -65,13 +64,13 @@ const TodoItem = ({
           >
             {todoText}
           </Text>
-          {timeStamp && (
-            <View style={styles.alarmContainer}>
-              <Alarm color={colorByBgColor} />
-              <Text style={[styles.timeStamp, { color: colorByBgColor }]}>
-                {timeStamp}
-              </Text>
-            </View>
+          {(dayTimeStamp || hourTimeStamp) && (
+            <AlarmContainer
+              dayTimeStamp={dayTimeStamp}
+              hourTimeStamp={hourTimeStamp}
+              colorByBgColor={colorByBgColor}
+              isHomePage={isHomePage}
+            />
           )}
         </View>
         {category !== undefined && category.name !== DefaultListName.Inbox && (
@@ -95,8 +94,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerRight: {
-    marginLeft: "2%",
-    width: "90%",
+    marginLeft: "4%",
+    width: "88%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -111,16 +110,6 @@ const styles = StyleSheet.create({
   },
   textCompleted: {
     opacity: 0.5,
-  },
-  alarmContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    opacity: 0.4,
-  },
-  timeStamp: {
-    marginLeft: 4,
-    color: colors.textColor,
-    fontSize: 12,
   },
   circle: {
     height: 10,

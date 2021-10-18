@@ -35,7 +35,8 @@ const Category = ({ route }: Props) => {
             id={todo.id}
             todoText={todo.todoText}
             isCompleted={todo.isCompleted}
-            timeStamp={todo.timeStamp}
+            dayTimeStamp={todo.dayTimeStamp}
+            hourTimeStamp={todo.hourTimeStamp}
             categoryId={todo.categoryId}
             bgColor={chosenList.color}
           />

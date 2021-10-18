@@ -6,26 +6,33 @@ import TodoItem from "../components/TodoItem";
 import colors from "../constants/colors";
 import Header from "../components/Header";
 import AddButton from "../components/AddButton";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../redux/hooks";
+import moment from "moment";
 
 const Home = () => {
   const todos = useAppSelector((state) => state.todos);
   const lists = useAppSelector((state) => state.lists);
+
+  const todayTodos = todos.filter((todo) =>
+    todo.dayTimeStamp?.isSame(moment(), "date")
+  );
 
   return (
     <View style={styles.container}>
       <Header bgColor={colors.bgColor} text="Today" RightIcon={MoreIcon} />
       <ScrollView>
         <View style={styles.todosContainer}>
-          {todos.map((todo) => (
+          {todayTodos.map((todo) => (
             <TodoItem
               key={todo.id}
               id={todo.id}
               todoText={todo.todoText}
               isCompleted={todo.isCompleted}
-              timeStamp={todo.timeStamp}
+              dayTimeStamp={todo.dayTimeStamp}
+              hourTimeStamp={todo.hourTimeStamp}
               categoryId={todo.categoryId}
               bgColor={colors.bgColor}
+              isHomePage
             />
           ))}
         </View>

@@ -3,14 +3,18 @@ import { View, StyleSheet, ScrollView, Text } from "react-native";
 import Header from "../components/Header";
 import { RootStackParamList } from "../types/types";
 import EditIcon from "../../assets/Edit.svg";
-import AddButton from "../components/AddButton";
 import TodoItem from "../components/TodoItem";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useAppSelector } from "../redux/hooks";
+import { withAddButton } from "../hocs/withAddButton";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Category">;
+type CategoryNavProps = NativeStackScreenProps<RootStackParamList, "Category">;
 
-const Category = ({ route }: Props) => {
+interface IProps extends CategoryNavProps {
+  isAddButtonPressed: boolean;
+}
+
+const Category = ({ route, isAddButtonPressed }: IProps) => {
   const { listId } = route.params;
 
   const todos = useAppSelector((state) => state.todos);
@@ -39,15 +43,15 @@ const Category = ({ route }: Props) => {
             hourTimeStamp={todo.hourTimeStamp}
             categoryId={todo.categoryId}
             bgColor={chosenList.color}
+            isAddButtonPressed={isAddButtonPressed}
           />
         ))}
       </ScrollView>
-      <AddButton />
     </View>
   );
 };
 
-export default Category;
+export default withAddButton(Category);
 
 const styles = StyleSheet.create({
   container: {

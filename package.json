@@ -34,6 +34,6 @@
     "typescript": "~4.0.0"
   },
   "private": true,
-  "name": "lab-02",
+  "name": "tasker",
   "version": "1.0.0"
 }

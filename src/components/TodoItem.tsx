@@ -15,6 +15,7 @@ import AlarmContainer from "./AlarmContainer";
 interface IProps extends Todo {
   bgColor: string;
   isHomePage?: true;
+  isAddButtonPressed: boolean;
 }
 
 const TodoItem = ({
@@ -26,6 +27,7 @@ const TodoItem = ({
   categoryId,
   bgColor,
   isHomePage,
+  isAddButtonPressed,
 }: IProps) => {
   const lists = useAppSelector((state) => state.lists);
 
@@ -38,7 +40,10 @@ const TodoItem = ({
   const onTodoPress = () => dispatch(completeTodo(id, isCompleted));
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onTodoPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={isAddButtonPressed ? undefined : onTodoPress}
+    >
       <View style={styles.containerLeft}>
         {isCompleted ? (
           <Marked color={getColorByBgColor(bgColor, colors.iconsColor)} />

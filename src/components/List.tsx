@@ -6,31 +6,27 @@ import { RootStackParamList } from "../types/types";
 import { renderTaskWord } from "../constants/renderTaskCount";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-export type HomeScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "Home"
->;
-
 export interface IProps {
   id: number;
   name: string;
   taskCount: number;
   color: string;
+  isAddButtonPressed: boolean;
+  navigateOnPress: (categoryId: number) => void;
 }
 
-const List = ({ id, name, taskCount, color }: IProps) => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
-
-  const navigateOnPress = () => {
-    navigation.navigate("Category", {
-      listId: id,
-    });
-  };
-
+const List = ({
+  id,
+  name,
+  taskCount,
+  color,
+  isAddButtonPressed,
+  navigateOnPress,
+}: IProps) => {
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor: color }]}
-      onPress={navigateOnPress}
+      onPress={isAddButtonPressed ? undefined : () => navigateOnPress(id)}
     >
       <Text style={[styles.name, { color: getColorByBgColor(color) }]}>
         {name}

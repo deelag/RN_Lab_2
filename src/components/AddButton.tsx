@@ -1,26 +1,79 @@
 import React from "react";
-import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import {
+  TapGestureHandler,
+  TapGestureHandlerGestureEvent,
+} from "react-native-gesture-handler";
+import Animated, {
+  interpolateColor,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
 import Plus from "../../assets/Plus.svg";
 import colors from "../constants/colors";
+import CreationContainer from "./CreationContainer";
 
-const AddButton = () => {
+interface IProps {
+  onButtonPress: () => void;
+  isAddButtonPressed: boolean;
+}
+
+const AddButton = ({ onButtonPress, isAddButtonPressed }: IProps) => {
+  const progress = useDerivedValue(() => {
+    return isAddButtonPressed ? withTiming(1) : withTiming(0);
+  }, [isAddButtonPressed]);
+  const rotation = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const bgColor = interpolateColor(
+      progress.value,
+      [0, 1],
+      [colors.bgColor, colors.iconsColor]
+    );
+
+    return {
+      backgroundColor: bgColor,
+      transform: [{ rotateZ: `${rotation.value}deg` }],
+    };
+  });
+
+  const gestureHandler =
+    useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
+      onActive: () => {
+        rotation.value = isAddButtonPressed ? withSpring(0) : withSpring(225);
+      },
+    });
+
   return (
-    <TouchableHighlight style={styles.addButton}>
-      <Plus color={colors.iconsColor} />
-    </TouchableHighlight>
+    <View>
+      {isAddButtonPressed && <CreationContainer />}
+      <TapGestureHandler
+        onGestureEvent={gestureHandler}
+        onActivated={onButtonPress}
+      >
+        <Animated.View style={[styles.container, animatedStyle]}>
+          <Plus
+            color={isAddButtonPressed ? colors.bgColor : colors.iconsColor}
+          />
+        </Animated.View>
+      </TapGestureHandler>
+    </View>
   );
 };
 
 export default AddButton;
 
 const styles = StyleSheet.create({
-  addButton: {
+  container: {
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
     right: 16,
     bottom: 30,
-    backgroundColor: colors.bgColor,
     width: 60,
     height: 60,
     borderRadius: 60,
@@ -32,5 +85,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
+    backgroundColor: colors.bgColor,
   },
 });

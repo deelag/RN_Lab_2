@@ -1,23 +1,29 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
 import Header from "../components/Header";
-import { lists } from "../data/lists";
 import { RootStackParamList } from "../types/types";
 import EditIcon from "../../assets/Edit.svg";
-import { todos } from "../data/todos";
-import AddButton from "../components/AddButton";
 import TodoItem from "../components/TodoItem";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useAppSelector } from "../redux/hooks";
+import { withAddButton } from "../hocs/withAddButton";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Category">;
+type CategoryNavProps = NativeStackScreenProps<RootStackParamList, "Category">;
 
-const Category = ({ route }: Props) => {
+interface IProps extends CategoryNavProps {
+  isAddButtonPressed: boolean;
+}
+
+const Category = ({ route, isAddButtonPressed }: IProps) => {
   const { listId } = route.params;
-  // TODO: check if this is the right way to do it
+
+  const todos = useAppSelector((state) => state.todos);
+  const lists = useAppSelector((state) => state.lists);
+
   const chosenList = lists.find((list) => list.id === listId);
-  if (chosenList === undefined) return <View />;
   const todosInList = todos.filter((todo) => todo.categoryId === listId);
 
+  if (chosenList === undefined) return <View />;
   return (
     <View style={[styles.container, { backgroundColor: chosenList.color }]}>
       <Header
@@ -30,20 +36,22 @@ const Category = ({ route }: Props) => {
         {todosInList.map((todo) => (
           <TodoItem
             key={todo.id}
+            id={todo.id}
             todoText={todo.todoText}
             isCompleted={todo.isCompleted}
-            timeStamp={todo.timeStamp}
+            dayTimeStamp={todo.dayTimeStamp}
+            hourTimeStamp={todo.hourTimeStamp}
             categoryId={todo.categoryId}
             bgColor={chosenList.color}
+            isAddButtonPressed={isAddButtonPressed}
           />
         ))}
       </ScrollView>
-      <AddButton />
     </View>
   );
 };
 
-export default Category;
+export default withAddButton(Category);
 
 const styles = StyleSheet.create({
   container: {

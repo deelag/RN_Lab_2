@@ -1,36 +1,49 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { DefaultListName } from "../redux/reducers/listsReducer";
+import { completeTodo } from "../redux/actions/todosActions";
+import { Todo } from "../redux/reducers/todosReducer";
 import Marked from "../../assets/Marked.svg";
 import Unmarked from "../../assets/Unmarked.svg";
-import Alarm from "../../assets/Alarm.svg";
-import { lists, ListName } from "../data/lists";
 import colors, {
   addOpacityToColor,
   getColorByBgColor,
 } from "../constants/colors";
+import AlarmContainer from "./AlarmContainer";
 
-interface IProps {
-  todoText: string;
-  isCompleted: boolean;
-  timeStamp: string | null;
-  categoryId: number;
+interface IProps extends Todo {
   bgColor: string;
+  isHomePage?: true;
+  isAddButtonPressed: boolean;
 }
 
 const TodoItem = ({
+  id,
   todoText,
   isCompleted,
-  timeStamp,
+  dayTimeStamp,
+  hourTimeStamp,
   categoryId,
   bgColor,
+  isHomePage,
+  isAddButtonPressed,
 }: IProps) => {
-  // TODO:
+  const lists = useAppSelector((state) => state.lists);
+
   const category = lists.find((list) => list.id === categoryId);
   const colorByBgColor = getColorByBgColor(bgColor);
-  const textColor = [styles.text, { color: colorByBgColor }];
+  const textStyle = [styles.text, { color: colorByBgColor }];
+
+  const dispatch = useAppDispatch();
+
+  const onTodoPress = () => dispatch(completeTodo(id, isCompleted));
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={isAddButtonPressed ? undefined : onTodoPress}
+    >
       <View style={styles.containerLeft}>
         {isCompleted ? (
           <Marked color={getColorByBgColor(bgColor, colors.iconsColor)} />
@@ -52,20 +65,20 @@ const TodoItem = ({
       >
         <View style={styles.textContainer}>
           <Text
-            style={isCompleted ? [textColor, styles.textCompleted] : textColor}
+            style={isCompleted ? [textStyle, styles.textCompleted] : textStyle}
           >
             {todoText}
           </Text>
-          {timeStamp && (
-            <View style={styles.alarmContainer}>
-              <Alarm color={colorByBgColor} />
-              <Text style={[styles.timeStamp, { color: colorByBgColor }]}>
-                {timeStamp}
-              </Text>
-            </View>
+          {(dayTimeStamp || hourTimeStamp) && (
+            <AlarmContainer
+              dayTimeStamp={dayTimeStamp}
+              hourTimeStamp={hourTimeStamp}
+              colorByBgColor={colorByBgColor}
+              isHomePage={isHomePage}
+            />
           )}
         </View>
-        {category !== undefined && category.name !== ListName.Inbox && (
+        {category !== undefined && category.name !== DefaultListName.Inbox && (
           <View style={[styles.circle, { backgroundColor: category.color }]} />
         )}
       </View>
@@ -86,8 +99,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerRight: {
-    marginLeft: "2%",
-    width: "90%",
+    marginLeft: "4%",
+    width: "88%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -102,16 +115,6 @@ const styles = StyleSheet.create({
   },
   textCompleted: {
     opacity: 0.5,
-  },
-  alarmContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    opacity: 0.3,
-  },
-  timeStamp: {
-    marginLeft: 4,
-    color: colors.textColor,
-    fontSize: 12,
   },
   circle: {
     height: 10,

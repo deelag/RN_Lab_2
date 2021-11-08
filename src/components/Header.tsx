@@ -21,8 +21,8 @@ const Header = ({ taskCount, bgColor, text, RightIcon }: IProps) => {
         <TouchableOpacity>
           <RightIcon
             color={getColorByBgColor(bgColor)}
-            height={20}
-            width={20}
+            height={24}
+            width={24}
             style={styles.rightIcon}
           />
         </TouchableOpacity>
